@@ -1,0 +1,46 @@
+[auth]
+
+port = 8081
+secret = "MuUhv7svOw9iWmeycg7iRhsuF5hr4Gik"
+
+[auth.providers]
+
+enabled = true
+
+[auth.providers.google]
+
+enabled = true
+client_id = ""
+client_secret = ""
+redirect_url = ""
+
+[auth.providers.vk]
+
+enabled = true
+client_id = ""
+client_secret = ""
+redirect_url = ""
+
+[auth.providers.yandex]
+
+enabled = true
+client_id = ""
+client_secret = ""
+redirect_url = ""
+
+[database]
+
+driver = "postgres"
+
+[database.postgres]
+
+host = "localhost"
+port = "5432"
+username = "postgres"
+password = "secret"
+dbname = "fitfeed"
+
+[web]
+
+hostname = "localhost"
+port = 8080
