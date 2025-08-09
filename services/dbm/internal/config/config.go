@@ -20,12 +20,12 @@ type AppConfig struct {
 	} `mapstructure:"database"`
 }
 
-func Load() AppConfig {
-	// Set up viper to read the config.yaml file
-	viper.SetConfigName("dbm-config")   // Config file name without extension
-	viper.SetConfigType("toml")         // Config file type
+func Load() *AppConfig {
+
+	viper.SetConfigName("dbm-config")
+	viper.SetConfigType("toml")
 	viper.AddConfigPath("./config")     // Look for the config file in the current directory
-	viper.AddConfigPath("../../config") // Look for the config file in the current directory
+	viper.AddConfigPath("../../config") // Look for the config file in the model root directory
 
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("fitfeed")
@@ -42,5 +42,5 @@ func Load() AppConfig {
 		log.Fatalf("Unable to decode into struct, %v", err)
 	}
 
-	return config
+	return &config
 }

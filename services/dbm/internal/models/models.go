@@ -24,7 +24,7 @@ func (b *Base) BeforeCreate(tx *gorm.DB) (err error) {
 // User is the model for the user table.
 type User struct {
 	Base
-	Username string  `gorm:"size:255;not null;unique" json:"username"`
+	Username string  `gorm:"size:255;uniqueIndex;not null" json:"username"`
 	Profile  Profile `json:"profile"`
 }
 

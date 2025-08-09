@@ -2,13 +2,16 @@ package main
 
 import (
 	"fitfeed/auth/internal/config"
-	"fitfeed/auth/internal/database"
+	"fitfeed/auth/internal/server"
 	"fmt"
+	"net/http"
 )
 
 func main() {
-	conf := config.Load()
-	fmt.Printf("conf: %+v\n", conf)
-	database.Init()
 
+	conf := config.Load()
+	srv := server.Init(conf)
+	srvURL := fmt.Sprintf(":%d", conf.Web.Port)
+
+	http.ListenAndServe(srvURL, srv)
 }

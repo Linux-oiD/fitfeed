@@ -37,7 +37,7 @@ func main() {
 
 	if conf.DB.Driver == "postgres" {
 
-		db, err = postgres.ConnectToDatabase()
+		db, err = postgres.ConnectToDatabase(conf)
 		if err != nil {
 			log.Fatalf("dbm: failed to open DB: %v", err)
 		}

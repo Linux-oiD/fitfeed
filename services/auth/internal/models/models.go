@@ -1,4 +1,4 @@
-package database
+package models
 
 import (
 	"time"
@@ -24,14 +24,15 @@ func (b *Base) BeforeCreate(tx *gorm.DB) (err error) {
 // User is the model for the user table.
 type User struct {
 	Base
-	Username string   `gorm:"size:255;not null;unique" json:"username"`
-	Profile  *Profile `json:"profile"`
+	Username string  `gorm:"size:255;uniqueIndex;not null" json:"username"`
+	Profile  Profile `json:"profile"`
 }
 
 // Profile is the model for the profile table.
 type Profile struct {
 	Base
-	FirstName string `gorm:"size:255;not null" json:"first_name"`
-	LastName  string `gorm:"size:255;not null" json:"last_name"`
-	Email     string `gorm:"uniqueIndex;not null" json:"email"`
+	FirstName string    `gorm:"size:255;not null" json:"first_name"`
+	LastName  string    `gorm:"size:255;not null" json:"last_name"`
+	Email     string    `gorm:"uniqueIndex;not null" json:"email"`
+	UserID    uuid.UUID `gorm:"type:uuid" json:"user_id"`
 }

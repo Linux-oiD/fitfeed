@@ -12,24 +12,31 @@ type AppConfig struct {
 		Port   int    `mapstructure:"port"`
 		Secret string `mapstructure:"secret"`
 	} `mapstructure:"auth"`
-	Db struct {
-		Driver   string `mapstructure:"driver"`
-		Host     string `mapstructure:"host"`
-		Port     int    `mapstructure:"port"`
-		Username string `mapstructure:"username"`
-		Password string `mapstructure:"password"`
+
+	DB struct {
+		Driver string `mapstructure:"driver"`
+
+		Postgres struct {
+			Host     string `mapstructure:"host"`
+			Port     int    `mapstructure:"port"`
+			Username string `mapstructure:"username"`
+			Password string `mapstructure:"password"`
+			DBname   string `mapstructure:"dbname"`
+		} `mapstructure:"postgres"`
 	} `mapstructure:"database"`
+
 	Web struct {
 		Hostname string `mapstructure:"hostname"`
 		Port     int    `mapstructure:"port"`
 	} `mapstructure:"web"`
 }
 
-func Load() AppConfig {
-	// Set up viper to read the config.yaml file
-	viper.SetConfigName("auth-config")  // Config file name without extension
-	viper.SetConfigType("toml")         // Config file type
-	viper.AddConfigPath("../../config") // Look for the config file in the current directory
+func Load() *AppConfig {
+
+	viper.SetConfigName("auth-config")
+	viper.SetConfigType("toml")
+	viper.AddConfigPath("../../config") // Look for the config file in the module root directory
+	viper.AddConfigPath("./config")     // Look for the config file in the current directory
 
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("fitfeed")
@@ -46,5 +53,5 @@ func Load() AppConfig {
 		log.Fatalf("Unable to decode into struct, %v", err)
 	}
 
-	return config
+	return &config
 }
