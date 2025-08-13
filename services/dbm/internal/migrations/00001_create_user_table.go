@@ -18,10 +18,16 @@ func upCreateUserTable(ctx context.Context, tx *sql.Tx) error {
 	if err := postgres.Migrator.CreateTable(&models.Profile{}); err != nil {
 		return err
 	}
+	if err := postgres.Migrator.CreateTable(&models.OauthProvider{}); err != nil {
+		return err
+	}
 	if err := postgres.Migrator.CreateTable(&models.User{}); err != nil {
 		return err
 	}
 	if err := postgres.Migrator.CreateConstraint(&models.User{}, "Profile"); err != nil {
+		return err
+	}
+	if err := postgres.Migrator.CreateConstraint(&models.User{}, "OauthProviders"); err != nil {
 		return err
 	}
 	return nil
@@ -29,10 +35,16 @@ func upCreateUserTable(ctx context.Context, tx *sql.Tx) error {
 
 func downCreateUserTable(ctx context.Context, tx *sql.Tx) error {
 	// This code is executed when the migration is rolled back.
+	if err := postgres.Migrator.DropConstraint(&models.User{}, "OauthProviders"); err != nil {
+		return err
+	}
 	if err := postgres.Migrator.DropConstraint(&models.User{}, "Profile"); err != nil {
 		return err
 	}
 	if err := postgres.Migrator.DropTable(&models.User{}); err != nil {
+		return err
+	}
+	if err := postgres.Migrator.DropTable(&models.OauthProvider{}); err != nil {
 		return err
 	}
 	if err := postgres.Migrator.DropTable(&models.Profile{}); err != nil {

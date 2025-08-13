@@ -1,29 +1,27 @@
 [auth]
 
 port = 8081
-secret = "MuUhv7svOw9iWmeycg7iRhsuF5hr4Gik"
-
-[auth.providers]
-
-enabled = true
+secret = "MuUhv7svOw9iWmeycg7iRhsuF5hr4Gik"  # CHANGE-ME: an example secret, change before use
+max_session_age = 86400
+is_prod = false
 
 [auth.providers.google]
 
-enabled = true
+enabled = false
 client_id = ""
 client_secret = ""
 redirect_url = ""
 
 [auth.providers.vk]
 
-enabled = true
+enabled = false
 client_id = ""
 client_secret = ""
 redirect_url = ""
 
 [auth.providers.yandex]
 
-enabled = true
+enabled = false
 client_id = ""
 client_secret = ""
 redirect_url = ""

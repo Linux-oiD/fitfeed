@@ -9,13 +9,18 @@ import (
 
 type AppConfig struct {
 	Auth struct {
-		Port   int    `mapstructure:"port"`
-		Secret string `mapstructure:"secret"`
+		Port      int    `mapstructure:"port"`
+		Secret    string `mapstructure:"secret"`
+		IsProd    bool   `mapstructure:"is_prod"`
+		MaxAge    uint   `mapstructure:"max_session_age"`
+		Providers map[string]struct {
+			Enabled      bool   `mapstructure:"enabled"`
+			ClientID     string `mapstructure:"client_id"`
+			ClientSecret string `mapstructure:"client_secret"`
+		} `mapstructure:"providers"`
 	} `mapstructure:"auth"`
-
 	DB struct {
-		Driver string `mapstructure:"driver"`
-
+		Driver   string `mapstructure:"driver"`
 		Postgres struct {
 			Host     string `mapstructure:"host"`
 			Port     int    `mapstructure:"port"`
@@ -24,7 +29,6 @@ type AppConfig struct {
 			DBname   string `mapstructure:"dbname"`
 		} `mapstructure:"postgres"`
 	} `mapstructure:"database"`
-
 	Web struct {
 		Hostname string `mapstructure:"hostname"`
 		Port     int    `mapstructure:"port"`
