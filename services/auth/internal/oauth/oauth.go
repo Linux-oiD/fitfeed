@@ -21,15 +21,19 @@ func NewAuth(conf *config.AppConfig) {
 
 	gothic.Store = store
 
-	if conf.Auth.Providers.google.Enabled {
-		if conf.Auth.IsProd {
-			callbackURL := fmt.Sprintf("%s://%s/%s/google/callback", conf.Web.Protocol, conf.Web.Hostname, conf.Auth.Prefix)
-		} else {
-			callbackURL := fmt.Sprintf("http://%s:%d/google/callback", conf.Web.Hostname, conf, Auth, Port)
-		}
-		goth.UseProviders(
-			google.New(conf.Auth.Providers.google.ClientId, conf.Auth.Providers.google.ClientSecret, callbackURL),
-		)
-	}
+	var callbackURL string
 
+	for name, provider := range conf.Auth.Providers {
+
+		if provider.Enabled {
+			if conf.Auth.IsProd {
+				callbackURL = fmt.Sprintf("%s://%s/%s/v1/oauth/%s/callback", conf.Web.Protocol, conf.Web.Hostname, conf.Auth.Prefix, name)
+			} else {
+				callbackURL = fmt.Sprintf("http://%s:%d/v1/oauth/%s/callback", conf.Web.Hostname, conf.Auth.Port, name)
+			}
+			goth.UseProviders(
+				google.New(provider.ClientID, provider.ClientSecret, callbackURL),
+			)
+		}
+	}
 }

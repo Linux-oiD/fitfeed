@@ -22,6 +22,8 @@ func NewOauthRoutes(r *chi.Mux, u usecase.UserManager, o usecase.OauthManager, p
 
 	r.Route("/oauth", func(r chi.Router) {
 		r.Get("/{provider}/callback", h.getAuthCallbackFunction)
+		r.Get("/{provider}/auth", h.getAuthFunction)
+		r.Get("/{provider}/logout", h.getLogoutFunction)
 
 	})
 }

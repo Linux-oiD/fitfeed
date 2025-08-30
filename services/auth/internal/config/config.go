@@ -10,9 +10,10 @@ import (
 type AppConfig struct {
 	Auth struct {
 		Port      int    `mapstructure:"port"`
+		Prefix    string `mapstructure:"prefix"`
 		Secret    string `mapstructure:"secret"`
 		IsProd    bool   `mapstructure:"is_prod"`
-		MaxAge    uint   `mapstructure:"max_session_age"`
+		MaxAge    int    `mapstructure:"max_session_age"`
 		Providers map[string]struct {
 			Enabled      bool   `mapstructure:"enabled"`
 			ClientID     string `mapstructure:"client_id"`
@@ -31,6 +32,7 @@ type AppConfig struct {
 	} `mapstructure:"database"`
 	Web struct {
 		Hostname string `mapstructure:"hostname"`
+		Protocol string `mapstructure:"protocol"`
 		Port     int    `mapstructure:"port"`
 	} `mapstructure:"web"`
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"fitfeed/auth/internal/config"
 	httpcontroller "fitfeed/auth/internal/controller/http"
+	"fitfeed/auth/internal/oauth"
 	"fitfeed/auth/internal/repo/oauthdb"
 	"fitfeed/auth/internal/repo/profiledb"
 	"fitfeed/auth/internal/repo/userdb"
@@ -20,6 +21,7 @@ import (
 func main() {
 
 	conf := config.Load()
+	oauth.NewAuth(conf)
 	db, err := postgres.ConnectToDatabase(postgres.PGConfig{
 		Host:     conf.DB.Postgres.Host,
 		Port:     conf.DB.Postgres.Port,
@@ -44,6 +46,7 @@ func main() {
 
 	go httpserver.GracefulShutdown(srv, done)
 
+	log.Println("Starting server...")
 	err = srv.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		panic(fmt.Sprintf("http server error: %s", err))
