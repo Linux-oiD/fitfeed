@@ -4,12 +4,14 @@ import (
 	"fitfeed/auth/internal/config"
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/gorilla/sessions"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/github"
 	"github.com/markbates/goth/providers/google"
+	"github.com/markbates/goth/providers/yandex"
 )
 
 func NewAuth(conf *config.AppConfig) {
@@ -20,6 +22,7 @@ func NewAuth(conf *config.AppConfig) {
 	store.Options.Path = "/"
 	store.Options.HttpOnly = true
 	store.Options.Secure = conf.Auth.IsProd
+	store.Options.SameSite = http.SameSiteLaxMode
 
 	gothic.Store = store
 
@@ -46,6 +49,8 @@ func NewAuth(conf *config.AppConfig) {
 		switch name {
 		case "google":
 			providers = append(providers, google.New(providerConf.ClientID, providerConf.ClientSecret, callbackURL))
+		case "yandex":
+			providers = append(providers, yandex.New(providerConf.ClientID, providerConf.ClientSecret, callbackURL))
 		case "github":
 			// If you have other providers, add them here
 			providers = append(providers, github.New(providerConf.ClientID, providerConf.ClientSecret, callbackURL))

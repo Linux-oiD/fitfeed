@@ -19,7 +19,7 @@ func (h *V1) getAuthCallbackFunction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(gothUser)
+	fmt.Printf("User: %+v", gothUser)
 
 	http.Redirect(w, r, "http://localhost:5173/", http.StatusFound)
 }
