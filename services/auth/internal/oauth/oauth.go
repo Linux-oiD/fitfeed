@@ -43,9 +43,6 @@ func NewAuth(conf *config.AppConfig) {
 
 		log.Printf("Registering OAuth2 provider '%s' with callback URL: %s", name, callbackURL)
 
-		// Note: The `google.New` and `github.New` calls are based on the provider `name`.
-		// You will need a way to dynamically create the correct provider.
-		// A `switch` statement is a common way to handle this.
 		switch name {
 		case "google":
 			providers = append(providers, google.New(providerConf.ClientID, providerConf.ClientSecret, callbackURL))
@@ -60,7 +57,6 @@ func NewAuth(conf *config.AppConfig) {
 		}
 	}
 
-	// --- Step 3: Register all collected providers at once ---
 	goth.UseProviders(providers...)
 	log.Printf("Goth providers initialized. Total providers: %d", len(goth.GetProviders()))
 }
