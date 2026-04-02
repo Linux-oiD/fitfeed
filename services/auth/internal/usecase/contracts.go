@@ -2,9 +2,12 @@ package usecase
 
 import (
 	"context"
+	"net/http"
 
 	"fitfeed/auth/internal/entity"
 
+	"github.com/go-webauthn/webauthn/protocol"
+	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/google/uuid"
 )
 
@@ -58,5 +61,12 @@ type (
 	JWTManager interface {
 		GenerateToken(user entity.User) (string, error)
 		ValidateToken(token string) (*entity.UserClaims, error)
+	}
+
+	PasskeyManager interface {
+		BeginRegistration(ctx context.Context, user entity.User) (*protocol.CredentialCreation, *webauthn.SessionData, error)
+		FinishRegistration(ctx context.Context, user entity.User, session webauthn.SessionData, response *http.Request) error
+		BeginLogin(ctx context.Context, username string) (*protocol.CredentialAssertion, *webauthn.SessionData, error)
+		FinishLogin(ctx context.Context, session webauthn.SessionData, response *http.Request) (entity.User, error)
 	}
 )

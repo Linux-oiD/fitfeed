@@ -9,4 +9,5 @@ type V1 struct {
 	o usecase.OauthManager
 	p usecase.ProfileManager
 	j usecase.JWTManager
+	pk usecase.PasskeyManager
 }

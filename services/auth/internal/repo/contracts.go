@@ -31,4 +31,11 @@ type (
 		UpdateProviderID(context.Context, uuid.UUID, string) error
 		Delete(context.Context, uuid.UUID) error
 	}
+
+	PasskeyDB interface {
+		Create(context.Context, entity.Passkey) error
+		GetByCredentialID(context.Context, []byte) (entity.Passkey, error)
+		UpdateSignCount(context.Context, []byte, uint32) error
+		Delete(context.Context, uuid.UUID) error
+	}
 )

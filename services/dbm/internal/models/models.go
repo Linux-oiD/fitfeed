@@ -27,6 +27,19 @@ type User struct {
 	Username       string          `gorm:"size:255;index;unique;not null" json:"username"`
 	Profile        Profile         `json:"profile"`
 	OauthProviders []OauthProvider `json:"oauth_providers"`
+	Passkeys       []Passkey       `json:"passkeys"`
+}
+
+// ... Profile and OauthProvider ...
+
+type Passkey struct {
+	Base
+	UserID      uuid.UUID `gorm:"type:uuid;index" json:"user_id"`
+	CredentialID []byte    `gorm:"type:bytea;index" json:"credential_id"`
+	PublicKey    []byte    `gorm:"type:bytea" json:"public_key"`
+	AttestationType string `gorm:"size:255" json:"attestation_type"`
+	AAGUID       []byte    `gorm:"type:bytea" json:"aaguid"`
+	SignCount    uint32    `json:"sign_count"`
 }
 
 // Profile is the model for the profile table.

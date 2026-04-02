@@ -3,6 +3,7 @@ package entity
 import (
 	"context"
 
+	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/google/uuid"
 )
 
@@ -12,6 +13,31 @@ type User struct {
 	Username       string          `gorm:"size:255;uniqueIndex;not null" json:"username"`
 	Profile        Profile         `json:"profile"`
 	OauthProviders []OauthProvider `json:"oauth_providers"`
+	Passkeys       []Passkey       `json:"passkeys"`
+}
+
+func (u User) WebAuthnID() []byte {
+	return []byte(u.Username)
+}
+
+func (u User) WebAuthnName() string {
+	return u.Username
+}
+
+func (u User) WebAuthnDisplayName() string {
+	return u.Username
+}
+
+func (u User) WebAuthnIcon() string {
+	return u.Profile.AvatarURL
+}
+
+func (u User) WebAuthnCredentials() []webauthn.Credential {
+	res := make([]webauthn.Credential, len(u.Passkeys))
+	for i, pk := range u.Passkeys {
+		res[i] = pk.WebAuthnCredential()
+	}
+	return res
 }
 
 type UserService interface {
