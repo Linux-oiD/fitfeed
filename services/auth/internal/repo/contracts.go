@@ -18,6 +18,7 @@ type (
 	}
 
 	ProfileDB interface {
+		Create(context.Context, entity.Profile) error
 		GetByID(context.Context, uuid.UUID) (entity.Profile, error)
 		GetByEmail(context.Context, string) (entity.Profile, error)
 		Update(context.Context, uuid.UUID, entity.Profile) error

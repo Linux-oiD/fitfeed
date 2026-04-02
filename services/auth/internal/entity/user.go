@@ -35,3 +35,8 @@ type UserFilter struct {
 	Offset int `json:"offset"`
 	Limit  int `json:"limit"`
 }
+
+type UserClaims struct {
+	ID       uuid.UUID `json:"id"`
+	Username string    `json:"username"`
+}

@@ -11,7 +11,7 @@ import (
 	"github.com/go-chi/render"
 )
 
-func New(u usecase.UserManager, o usecase.OauthManager, p usecase.ProfileManager) http.Handler {
+func New(u usecase.UserManager, o usecase.OauthManager, p usecase.ProfileManager, j usecase.JWTManager) http.Handler {
 
 	r := chi.NewRouter()
 
@@ -32,7 +32,7 @@ func New(u usecase.UserManager, o usecase.OauthManager, p usecase.ProfileManager
 
 	apiV1 := chi.NewRouter()
 
-	v1.NewOauthRoutes(apiV1, u, o, p)
+	v1.NewOauthRoutes(apiV1, u, o, p, j)
 
 	r.Mount("/v1", apiV1)
 
