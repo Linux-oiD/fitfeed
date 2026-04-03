@@ -2,6 +2,46 @@
 
 FitFeed uses a PostgreSQL database for data storage. All models are defined using GORM and follow a consistent structure.
 
+## ER Diagram
+
+```mermaid
+erDiagram
+    USER ||--|| PROFILE : has
+    USER ||--o{ OAUTH_PROVIDER : "linked with"
+    USER ||--o{ PASSKEY : "registered with"
+
+    USER {
+        uuid id PK
+        string username
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    PROFILE {
+        uuid id PK
+        uuid user_id FK
+        string first_name
+        string last_name
+        string email
+        string avatar_url
+    }
+
+    OAUTH_PROVIDER {
+        uuid id PK
+        uuid user_id FK
+        string provider
+        string provider_id
+    }
+
+    PASSKEY {
+        uuid id PK
+        uuid user_id FK
+        bytea credential_id
+        bytea public_key
+        uint32 sign_count
+    }
+```
+
 ## Base Model
 
 The base model contains common fields for all tables:

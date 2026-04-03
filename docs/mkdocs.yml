@@ -5,13 +5,35 @@ docs_dir: src
 
 theme:
   name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.mermaid_format
 
 nav:
   - Home: index.md
-  - Development: development.md
-  - Architecture: architecture.md
-  - Data Models: data-models.md
-  - Services:
-    - Auth: services/auth.md
-    - API: services/api.md
-    - Web: services/web.md
+  - User Guides:
+    - Overview: user-guides/index.md
+  - Admin Guides:
+    - Overview: admin-guides/index.md
+    - Configuration: admin-guides/configuration.md
+    - Deployment: admin-guides/deployment.md
+  - Developer Guides:
+    - Getting Started: developer-guides/development.md
+    - Architecture: developer-guides/architecture.md
+    - Data Models: developer-guides/data-models.md
+    - Services:
+      - Auth: developer-guides/services/auth.md
+      - API: developer-guides/services/api.md
+      - Web: developer-guides/services/web.md

@@ -2,6 +2,24 @@
 
 FitFeed follows a microservices architecture with a focus on privacy and security.
 
+## System Overview
+
+```mermaid
+graph TD
+    User((User))
+    Web[Web Frontend - React]
+    API[API Service - Go]
+    Auth[Auth Service - Go]
+    DB[(PostgreSQL)]
+    
+    User <-->|HTTPS| Web
+    Web <-->|REST/JWT| API
+    Web <-->|REST/OAuth/Passkey| Auth
+    API <-->|SQL| DB
+    Auth <-->|SQL| DB
+    Auth -.->|Provides JWT| Web
+```
+
 ## Clean Code Pattern
 
 All Go services follow a layered approach:
