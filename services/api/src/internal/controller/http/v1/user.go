@@ -28,13 +28,24 @@ func (c *UserController) GetProfile(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *UserController) UpdateProfile(w http.ResponseWriter, r *http.Request) {
-	// TODO: Get user ID from JWT context (needs middleware)
-	// For now assume we get it from request or similar (unsafe)
+	claims, err := GetUserFromContext(r.Context())
+	if err != nil {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
 	var profile entity.Profile
 	if err := json.NewDecoder(r.Body).Decode(&profile); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	// err := c.u.UpdateProfile(r.Context(), userID, profile)
-	w.WriteHeader(http.StatusNotImplemented)
+
+	err = c.u.UpdateProfile(r.Context(), claims.ID, profile)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "profile updated"})
 }

@@ -13,7 +13,12 @@ func NewRouter(r chi.Router, u usecase.UserManager, conf *config.AppConfig) {
 
 	r.Route("/users", func(r chi.Router) {
 		r.Get("/{username}", uc.GetProfile)
-		r.Put("/profile", uc.UpdateProfile)
+		
+		// Protected routes
+		r.Group(func(r chi.Router) {
+			r.Use(JWTMiddleware(conf.Auth.Secret))
+			r.Put("/profile", uc.UpdateProfile)
+		})
 	})
 
 	r.Get("/config", cc.GetConfig)
