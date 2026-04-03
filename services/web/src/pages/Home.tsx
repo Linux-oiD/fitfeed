@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Row, Col, Card, Avatar, Space, Button, Empty } from 'antd';
+import { Typography, Row, Col, Card, Avatar, Button, Empty } from 'antd';
 import { useAuth } from '../context/AuthContext';
 import { UserOutlined, PlusOutlined } from '@ant-design/icons';
 

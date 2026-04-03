@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { User } from '../types';
+import React, { createContext, useContext, useState, type ReactNode, useEffect } from 'react';
+import type { User } from '../types';
 
 export interface AppConfig {
   auth_url: string;

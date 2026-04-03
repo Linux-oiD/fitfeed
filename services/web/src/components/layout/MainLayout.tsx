@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import { Layout } from 'antd';
 import AppHeader from './AppHeader';
 import AppFooter from './AppFooter';

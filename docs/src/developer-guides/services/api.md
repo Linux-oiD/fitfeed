@@ -2,11 +2,16 @@
 
 The `api` service provides the main interface for the FitFeed web client, offering profile management and configuration.
 
-## Features
+## Project Structure
 
-- **Profile Management:** Users can view and update their personal information (name, avatar, email).
-- **Service Configuration:** Provides the frontend with necessary backend URLs and settings.
-- **Route Protection:** All profile-related routes are protected by JWT middleware.
+The service follows a flat module structure:
+- `cmd/api/main.go`: Application entry point.
+- `internal/config/`: Configuration loading logic.
+- `internal/controller/http/`: HTTP handlers and routing.
+- `internal/entity/`: Domain models.
+- `internal/repo/`: Data access layer.
+- `internal/usecase/`: Business logic.
+- `pkg/`: Shared utility packages.
 
 ## API Endpoints
 

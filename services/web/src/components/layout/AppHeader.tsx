@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Button, Dropdown, Avatar, Space, Modal, Input, Divider, message } from 'antd';
+import { Layout, Menu, Button, Dropdown, Avatar, Space, Modal, Input, Divider, message, type MenuProps } from 'antd';
 import { UserOutlined, SettingOutlined, LogoutOutlined, GoogleOutlined, IdcardOutlined } from '@ant-design/icons';
 import { useAuth } from '../../context/AuthContext';
 import { passkeyService } from '../../services/auth';
@@ -55,7 +55,7 @@ const AppHeader: React.FC = () => {
     window.location.href = `${config.auth_url}/v1/oauth/${provider}/auth`;
   };
 
-  const menuItems = [
+  const menuItems: MenuProps['items'] = [
     {
       key: 'user-info',
       disabled: true,

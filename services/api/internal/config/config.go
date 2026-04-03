@@ -55,7 +55,7 @@ func Load() *AppConfig {
 	viper.AddConfigPath(".")
 
 	// 3. Fallback for local development relative to the service root
-	viper.AddConfigPath("../../../")
+	viper.AddConfigPath("../../")
 
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("fitfeed")

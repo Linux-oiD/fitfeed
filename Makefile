@@ -43,14 +43,12 @@ dev-web:
 
 migrate-up:
 	@echo "Running migrations up..."
-	@cd services/dbm && FITFEED_CONF=$(PWD)/../.. go run cmd/dbm/main.go up
+	@cd services/dbm && FITFEED_CONF=$(PWD) go run cmd/dbm/main.go up
 
 migrate-down:
 	@echo "Running migrations down..."
-	@cd services/dbm && FITFEED_CONF=$(PWD)/../.. go run cmd/dbm/main.go down
+	@cd services/dbm && FITFEED_CONF=$(PWD) go run cmd/dbm/main.go down
 
 dev: dev-db
 	@echo "Starting all services..."
-	@# Use a tool like 'foreman', 'overmind' or just run in parallel if simple enough.
-	@# For simplicity in this Makefile, we'll just suggest running them in separate terminals or use &
 	@make -j 3 dev-auth dev-api dev-web
