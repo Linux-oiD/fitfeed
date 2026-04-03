@@ -47,6 +47,45 @@ The core functionality is split across several services located in the `services
 
 ---
 
+## 🛠️ Development
+
+FitFeed uses a unified development environment managed by a root `Makefile` and `Air` for Go hot-reloading.
+
+### 1. Initial Setup
+
+Check if you have all required tools (Go, Docker, Node.js, Bun, Air) and initialize your local configuration:
+
+```bash
+make init
+```
+
+This will create a `config.toml` from the template. Edit it to provide your OAuth credentials or adjust ports.
+
+### 2. Running the Project
+
+To start the database, apply migrations, and start backend services (with hot-reload) and the frontend (Vite) in parallel:
+
+```bash
+make dev
+```
+
+To stop the development environment (database and other containers):
+
+```bash
+make dev-stop
+```
+
+### 3. Database Migrations
+
+Manage your schema evolution using the `dbm` service through the Makefile:
+
+```bash
+make migrate-up
+make migrate-down
+```
+
+---
+
 ## ⚙️ Installation and Setup
 
 *(Note: Please fill in the detailed steps here once the setup is finalized. For now, this serves as a placeholder.)*

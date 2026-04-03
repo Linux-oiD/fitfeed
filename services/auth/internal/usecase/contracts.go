@@ -2,22 +2,29 @@ package usecase
 
 import (
 	"context"
+	"net/http"
 
 	"fitfeed/auth/internal/entity"
 
+	"github.com/go-webauthn/webauthn/protocol"
+	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/google/uuid"
 )
 
 type (
 	UserManager interface {
-		// Check username availability. If username is not available -
+		//Check username availability. If username is not available -
 		// returns ENOTAVAILABLE
 		CheckUsername(ctx context.Context, username string) error
 
 		//Create new user.
 		RegisterUser(ctx context.Context, user entity.User) error
 
+		// Returns user by username
+		GetByUsername(ctx context.Context, username string) (entity.User, error)
+
 		// Updates a user object. Returns EUNAUTHORIZED if current user is not
+
 		// the user that is being updated. Returns ENOTFOUND if user does not exist.
 		UpdateUsername(ctx context.Context, id uuid.UUID, username string) (entity.User, error)
 
@@ -30,6 +37,9 @@ type (
 	OauthManager interface {
 		//Add new Oauth provider to the User
 		AddProvider(ctx context.Context, provider entity.OauthProvider) error
+
+		// Get provider by providerID
+		GetByProviderID(ctx context.Context, providerID string) (entity.OauthProvider, error)
 
 		//Update OauthProvider object. Returns EUNAUTHORIZED if current user is not
 		// the owner of provider that is being updated. Returns ENOTFOUND if provider does not exist.
@@ -46,5 +56,17 @@ type (
 
 		// Return UserID if email exist overvise return nil and ENOTFOUND if email does not exist.
 		CheckEmail(ctx context.Context, email string) (uuid.UUID, error)
+	}
+
+	JWTManager interface {
+		GenerateToken(user entity.User) (string, error)
+		ValidateToken(token string) (*entity.UserClaims, error)
+	}
+
+	PasskeyManager interface {
+		BeginRegistration(ctx context.Context, user entity.User) (*protocol.CredentialCreation, *webauthn.SessionData, error)
+		FinishRegistration(ctx context.Context, user entity.User, session webauthn.SessionData, response *http.Request) error
+		BeginLogin(ctx context.Context, username string) (*protocol.CredentialAssertion, *webauthn.SessionData, error)
+		FinishLogin(ctx context.Context, session webauthn.SessionData, response *http.Request) (entity.User, error)
 	}
 )

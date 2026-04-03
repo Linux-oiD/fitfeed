@@ -18,6 +18,7 @@ type (
 	}
 
 	ProfileDB interface {
+		Create(context.Context, entity.Profile) error
 		GetByID(context.Context, uuid.UUID) (entity.Profile, error)
 		GetByEmail(context.Context, string) (entity.Profile, error)
 		Update(context.Context, uuid.UUID, entity.Profile) error
@@ -28,6 +29,13 @@ type (
 		GetByID(context.Context, uuid.UUID) (entity.OauthProvider, error)
 		GetByProviderID(context.Context, string) (entity.OauthProvider, error)
 		UpdateProviderID(context.Context, uuid.UUID, string) error
+		Delete(context.Context, uuid.UUID) error
+	}
+
+	PasskeyDB interface {
+		Create(context.Context, entity.Passkey) error
+		GetByCredentialID(context.Context, []byte) (entity.Passkey, error)
+		UpdateSignCount(context.Context, []byte, uint32) error
 		Delete(context.Context, uuid.UUID) error
 	}
 )

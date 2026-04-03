@@ -1,0 +1,44 @@
+[api]
+port = 8082
+
+[auth]
+port = 8081
+prefix = "auth"
+secret = "MuUhv7svOw9iWmeycg7iRhsuF5hr4Gik"
+max_session_age = 86400
+is_prod = false
+
+[database]
+driver = "postgres"
+
+[database.postgres]
+host = "localhost"
+port = 5432
+username = "postgres"
+password = "secret"
+dbname = "fitfeed"
+
+[web]
+hostname = "localhost"
+protocol = "http"
+port = 5173
+
+[auth.providers.google]
+enabled = false
+client_id = ""
+client_secret = ""
+
+[auth.providers.github]
+enabled = false
+client_id = ""
+client_secret = ""
+
+[auth.providers.yandex]
+enabled = false
+client_id = ""
+client_secret = ""
+
+[auth.providers.vk]
+enabled = false
+client_id = ""
+client_secret = ""

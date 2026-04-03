@@ -18,6 +18,12 @@ func New(db *gorm.DB) *ProfileDB {
 	return &ProfileDB{db: db}
 }
 
+func (p *ProfileDB) Create(ctx context.Context, profile entity.Profile) error {
+
+	err := gorm.G[entity.Profile](p.db).Create(ctx, &profile)
+	return err
+}
+
 func (p *ProfileDB) GetByID(ctx context.Context, id uuid.UUID) (entity.Profile, error) {
 
 	profile, err := gorm.G[entity.Profile](p.db).Where("id = ?", id).First(ctx)

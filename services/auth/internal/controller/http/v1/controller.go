@@ -8,4 +8,6 @@ type V1 struct {
 	u usecase.UserManager
 	o usecase.OauthManager
 	p usecase.ProfileManager
+	j usecase.JWTManager
+	pk usecase.PasskeyManager
 }
