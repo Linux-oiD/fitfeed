@@ -1,26 +1,57 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Button, Dropdown, Avatar, Space, Modal } from 'antd';
+import { Layout, Menu, Button, Dropdown, Avatar, Space, Modal, Input, Divider, message } from 'antd';
 import { UserOutlined, SettingOutlined, LogoutOutlined, GoogleOutlined, IdcardOutlined } from '@ant-design/icons';
 import { useAuth } from '../../context/AuthContext';
+import { passkeyService } from '../../services/auth';
 
 const { Header } = Layout;
 
 const AppHeader: React.FC = () => {
-  const { user, isLoggedIn, logout, config } = useAuth();
+  const { user, isLoggedIn, logout, login, config } = useAuth();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [username, setUsername] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleLogout = () => {
     logout();
   };
 
-  const handlePasskeyLogin = () => {
-    // TODO: Implement Passkey Login
-    console.log("Passkey login initiated");
+  const handlePasskeyLogin = async () => {
+    if (!username) {
+      message.error("Please enter a username");
+      return;
+    }
+    setLoading(true);
+    try {
+      const userJson = await passkeyService.login(username);
+      login(JSON.parse(userJson));
+      message.success("Logged in with Passkey!");
+      setIsModalVisible(false);
+    } catch (err: any) {
+      message.error(`Passkey login failed: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePasskeyRegister = async () => {
+    if (!username) {
+      message.error("Please enter a username");
+      return;
+    }
+    setLoading(true);
+    try {
+      await passkeyService.register(username);
+      message.success("Passkey registered! You can now log in.");
+    } catch (err: any) {
+      message.error(`Passkey registration failed: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleOAuthLogin = (provider: string) => {
     if (!config) return;
-    // Redirect to backend auth
     window.location.href = `${config.auth_url}/v1/oauth/${provider}/auth`;
   };
 
@@ -36,22 +67,9 @@ const AppHeader: React.FC = () => {
       ),
     },
     { type: 'divider' },
-    {
-      key: 'profile',
-      icon: <UserOutlined />,
-      label: 'My Profile',
-    },
-    {
-      key: 'settings',
-      icon: <SettingOutlined />,
-      label: 'Settings',
-    },
-    {
-      key: 'logout',
-      icon: <LogoutOutlined />,
-      label: 'Log out',
-      onClick: handleLogout,
-    },
+    { key: 'profile', icon: <UserOutlined />, label: 'My Profile' },
+    { key: 'settings', icon: <SettingOutlined />, label: 'Settings' },
+    { key: 'logout', icon: <LogoutOutlined />, label: 'Log out', onClick: handleLogout },
   ];
 
   return (
@@ -88,7 +106,7 @@ const AppHeader: React.FC = () => {
             </Button>
           </Dropdown>
         ) : (
-          <Button type="primary" style={{ backgroundColor: '#fc4c02', borderColor: '#fc4c02' }} onClick={() => setIsModalVisible(true)}>
+          <Button type="primary" onClick={() => setIsModalVisible(true)}>
             Log In
           </Button>
         )}
@@ -102,15 +120,24 @@ const AppHeader: React.FC = () => {
         centered
       >
         <Space direction="vertical" style={{ width: '100%' }} size="middle">
+          <Input 
+            placeholder="Username" 
+            prefix={<UserOutlined />} 
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Button block type="primary" icon={<IdcardOutlined />} onClick={handlePasskeyLogin} loading={loading}>
+            Sign in with Passkey
+          </Button>
+          <Button block onClick={handlePasskeyRegister} loading={loading}>
+            Register Passkey
+          </Button>
+          
+          <Divider>Or</Divider>
+          
           <Button block icon={<GoogleOutlined />} onClick={() => handleOAuthLogin('google')}>
             Continue with Google
           </Button>
-          <Button block icon={<IdcardOutlined />} onClick={handlePasskeyLogin}>
-            Sign in with Passkey
-          </Button>
-          <div style={{ textAlign: 'center', color: '#8c8c8c', fontSize: '12px', marginTop: '16px' }}>
-            By continuing, you agree to FitFeed's Terms of Service and Privacy Policy.
-          </div>
         </Space>
       </Modal>
     </Header>
