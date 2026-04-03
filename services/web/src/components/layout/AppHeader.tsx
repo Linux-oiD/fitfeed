@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 const { Header } = Layout;
 
 const AppHeader: React.FC = () => {
-  const { user, isLoggedIn, logout, login } = useAuth();
+  const { user, isLoggedIn, logout, config } = useAuth();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleLogout = () => {
@@ -19,8 +19,9 @@ const AppHeader: React.FC = () => {
   };
 
   const handleOAuthLogin = (provider: string) => {
+    if (!config) return;
     // Redirect to backend auth
-    window.location.href = `http://localhost:8081/v1/oauth/${provider}/auth`;
+    window.location.href = `${config.auth_url}/v1/oauth/${provider}/auth`;
   };
 
   const menuItems = [

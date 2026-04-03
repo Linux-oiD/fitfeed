@@ -1,9 +1,15 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { User } from '../types';
+
+export interface AppConfig {
+  auth_url: string;
+  api_url: string;
+}
 
 interface AuthContextType {
   user: User | null;
   isLoggedIn: boolean;
+  config: AppConfig | null;
   login: (user: User) => void;
   logout: () => void;
 }
@@ -11,19 +17,34 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+  const [config, setConfig] = useState<AppConfig | null>(null);
+
+  useEffect(() => {
+    // Fetch config from API using Vite env var for bootstrap
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8082';
+    fetch(`${apiUrl}/v1/config`)
+      .then(res => res.json())
+      .then(data => setConfig(data))
+      .catch(err => console.error("Failed to fetch config", err));
+  }, []);
 
   const login = (userData: User) => {
     setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
-    // TODO: Call API logout
+    localStorage.removeItem('user');
+    // TODO: Call API logout using config.auth_url
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn: !!user, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoggedIn: !!user, config, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

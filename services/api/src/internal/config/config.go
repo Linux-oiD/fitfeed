@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"os"
 	"strings"
 
 	"github.com/spf13/viper"
@@ -41,10 +42,20 @@ type AppConfig struct {
 }
 
 func Load() *AppConfig {
-	viper.SetConfigName("api-config")
+
+	viper.SetConfigName("config")
 	viper.SetConfigType("toml")
-	viper.AddConfigPath("../../config")
-	viper.AddConfigPath("./config")
+
+	// 1. Look for config file in path provided by env FITFEED_CONF
+	if envConf := os.Getenv("FITFEED_CONF"); envConf != "" {
+		viper.AddConfigPath(envConf)
+	}
+
+	// 2. Look in the current working directory
+	viper.AddConfigPath(".")
+
+	// 3. Fallback for local development relative to the service root
+	viper.AddConfigPath("../../../")
 
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("fitfeed")
@@ -52,7 +63,7 @@ func Load() *AppConfig {
 
 	err := viper.ReadInConfig()
 	if err != nil {
-		log.Fatalf("Error reading config file, %s", err)
+		log.Printf("Error reading config file, %s", err)
 	}
 
 	var config AppConfig
