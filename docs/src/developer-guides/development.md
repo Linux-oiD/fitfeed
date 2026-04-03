@@ -25,10 +25,16 @@ This command checks for required tools and initializes your local `config.toml`.
 
 ### Running for Development
 
-To start the database, backend services, and frontend in parallel:
+To start the database, apply migrations, and start backend services and frontend in parallel:
 
 ```bash
 make dev
+```
+
+To stop the development environment:
+
+```bash
+make dev-stop
 ```
 
 ## LLM Usage Policy

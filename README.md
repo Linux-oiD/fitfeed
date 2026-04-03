@@ -63,10 +63,16 @@ This will create a `config.toml` from the template. Edit it to provide your OAut
 
 ### 2. Running the Project
 
-To start the database, backend services (with hot-reload), and the frontend (Vite) in parallel:
+To start the database, apply migrations, and start backend services (with hot-reload) and the frontend (Vite) in parallel:
 
 ```bash
 make dev
+```
+
+To stop the development environment (database and other containers):
+
+```bash
+make dev-stop
 ```
 
 ### 3. Database Migrations

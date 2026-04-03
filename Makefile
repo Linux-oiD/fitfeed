@@ -1,6 +1,6 @@
 # Main Makefile for FitFeed project
 
-.PHONY: help init dev dev-db dev-auth dev-api dev-web migrate-up migrate-down
+.PHONY: help init dev dev-db dev-stop dev-auth dev-api dev-web migrate-up migrate-down
 
 help:
 	@echo "FitFeed Development Environment"
@@ -9,6 +9,7 @@ help:
 	@echo "  make init           - Check and install required tools"
 	@echo "  make dev            - Run all services in development mode"
 	@echo "  make dev-db         - Run only the database (Docker)"
+	@echo "  make dev-stop       - Stop the database and other containers"
 	@echo "  make dev-auth       - Run Auth service with hot-reload (Air)"
 	@echo "  make dev-api        - Run API service with hot-reload (Air)"
 	@echo "  make dev-web        - Run Web frontend (Vite)"
@@ -28,6 +29,10 @@ init:
 dev-db:
 	@echo "Starting Database..."
 	@docker compose -f deployments/docker-compose/postgres/docker-compose.yml up -d
+
+dev-stop:
+	@echo "Stopping dev environment..."
+	@docker compose -f deployments/docker-compose/postgres/docker-compose.yml down
 
 dev-auth:
 	@echo "Starting Auth service..."
@@ -50,5 +55,8 @@ migrate-down:
 	@cd services/dbm && FITFEED_CONF=$(PWD) go run cmd/dbm/main.go down
 
 dev: dev-db
+	@echo "Waiting for database to be ready..."
+	@sleep 3
+	@make migrate-up
 	@echo "Starting all services..."
 	@make -j 3 dev-auth dev-api dev-web
