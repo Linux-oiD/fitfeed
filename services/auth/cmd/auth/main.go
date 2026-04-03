@@ -14,7 +14,6 @@ import (
 	"fitfeed/auth/internal/usecase/profilemanager"
 	"fitfeed/auth/internal/usecase/usermanager"
 	"fmt"
-	"log"
 	"log/slog"
 	"net/http"
 	"os"

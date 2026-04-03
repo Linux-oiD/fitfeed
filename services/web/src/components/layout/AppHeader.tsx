@@ -27,8 +27,9 @@ const AppHeader: React.FC = () => {
       login(JSON.parse(userJson));
       message.success("Logged in with Passkey!");
       setIsModalVisible(false);
-    } catch (err: any) {
-      message.error(`Passkey login failed: ${err.message}`);
+    } catch (err) {
+      const error = err as Error;
+      message.error(`Passkey login failed: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -43,8 +44,9 @@ const AppHeader: React.FC = () => {
     try {
       await passkeyService.register(username);
       message.success("Passkey registered! You can now log in.");
-    } catch (err: any) {
-      message.error(`Passkey registration failed: ${err.message}`);
+    } catch (err) {
+      const error = err as Error;
+      message.error(`Passkey registration failed: ${error.message}`);
     } finally {
       setLoading(false);
     }

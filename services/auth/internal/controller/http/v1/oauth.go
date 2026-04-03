@@ -25,7 +25,7 @@ func (h *V1) getAuthCallbackFunction(w http.ResponseWriter, r *http.Request) {
 	var user entity.User
 
 	// 1. Check if this OAuth provider is already linked
-	oauthProvider, err := h.o.GetByProviderID(ctx, gothUser.UserID)
+	_, err = h.o.GetByProviderID(ctx, gothUser.UserID)
 	if err == nil {
 		// Found user by OAuth provider
 		user, err = h.u.GetByUsername(ctx, gothUser.NickName) // Assuming NickName is username
