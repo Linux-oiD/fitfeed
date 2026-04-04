@@ -10,7 +10,9 @@ export const passkeyService = {
     const baseUrl = getBaseUrl();
     
     // 1. Begin Registration
-    const response = await fetch(`${baseUrl}/register/begin?username=${username}`);
+    const response = await fetch(`${baseUrl}/register/begin?username=${username}`, {
+	    credentials: 'include',
+    });
     if (!response.ok) throw new Error('Failed to begin registration');
     
     const options = await response.json();
@@ -23,6 +25,7 @@ export const passkeyService = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credential),
+      credentials: 'include',
     });
     
     if (!finishResponse.ok) throw new Error('Failed to finish registration');

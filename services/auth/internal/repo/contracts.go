@@ -10,7 +10,7 @@ import (
 
 type (
 	UserDB interface {
-		Create(context.Context, entity.User) error
+		Create(context.Context, *entity.User) error
 		GetByID(context.Context, uuid.UUID) (entity.User, error)
 		GetByUsername(context.Context, string) (entity.User, error)
 		UpdateUsername(context.Context, uuid.UUID, string) error

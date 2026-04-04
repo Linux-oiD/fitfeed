@@ -9,7 +9,8 @@ import (
 )
 
 type AppConfig struct {
-	DB struct {
+	IsProd bool `mapstructure:"is_prod"`
+	DB     struct {
 		Driver   string `mapstructure:"driver"`
 		Postgres struct {
 			Host     string `mapstructure:"host"`
@@ -18,6 +19,13 @@ type AppConfig struct {
 			Password string `mapstructure:"password"`
 			DBname   string `mapstructure:"dbname"`
 		} `mapstructure:"postgres"`
+		Mysql struct {
+			Host     string `mapstructure:"host"`
+			Port     int    `mapstructure:"port"`
+			Username string `mapstructure:"username"`
+			Password string `mapstructure:"password"`
+			DBname   string `mapstructure:"dbname"`
+		} `mapstructure:"mysql"`
 	} `mapstructure:"database"`
 }
 

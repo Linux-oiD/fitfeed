@@ -36,11 +36,11 @@ dev-stop:
 
 dev-auth:
 	@echo "Starting Auth service..."
-	@FITFEED_CONF=$(PWD) air -c .air.auth.toml
+	@cd services/auth && FITFEED_CONF=$(PWD) air -c $(PWD)/.air.auth.toml
 
 dev-api:
 	@echo "Starting API service..."
-	@FITFEED_CONF=$(PWD) air -c .air.api.toml
+	@cd services/api &&FITFEED_CONF=$(PWD) air -c $(PWD)/.air.api.toml
 
 dev-web:
 	@echo "Starting Web frontend..."

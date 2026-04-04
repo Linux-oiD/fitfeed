@@ -3,6 +3,7 @@ package v1
 import (
 	"encoding/json"
 	"fitfeed/auth/internal/entity"
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -20,7 +21,7 @@ func (h *V1) beginRegistration(w http.ResponseWriter, r *http.Request) {
 	user, err := h.u.GetByUsername(r.Context(), username)
 	if err != nil {
 		user = entity.User{Username: username}
-		err = h.u.RegisterUser(r.Context(), user)
+		err = h.u.RegisterUser(r.Context(), &user)
 		if err != nil {
 			http.Error(w, "failed to register user", http.StatusInternalServerError)
 			return
@@ -44,6 +45,7 @@ func (h *V1) beginRegistration(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *V1) finishRegistration(w http.ResponseWriter, r *http.Request) {
+	slog.Info("check request cookies", "cookies", r.Header.Get("Cookie"))
 	username := r.URL.Query().Get("username")
 	user, err := h.u.GetByUsername(r.Context(), username)
 	if err != nil {

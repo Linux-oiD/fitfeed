@@ -33,7 +33,7 @@ func (u *UserManager) CheckUsername(ctx context.Context, username string) error 
 	return entity.EINTERNAL
 }
 
-func (u *UserManager) RegisterUser(ctx context.Context, user entity.User) error {
+func (u *UserManager) RegisterUser(ctx context.Context, user *entity.User) error {
 	err := u.db.Create(ctx, user)
 	if err != nil {
 		u.logger.Error("failed to register user", "error", err, "username", user.Username)

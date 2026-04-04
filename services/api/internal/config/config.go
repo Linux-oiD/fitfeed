@@ -9,7 +9,8 @@ import (
 )
 
 type AppConfig struct {
-	API struct {
+	IsProd bool `mapstructure:"is_prod"`
+	API    struct {
 		Port int `mapstructure:"port"`
 	} `mapstructure:"api"`
 	Auth struct {

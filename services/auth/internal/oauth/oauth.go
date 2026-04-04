@@ -21,7 +21,7 @@ func NewAuth(conf *config.AppConfig) {
 
 	store.Options.Path = "/"
 	store.Options.HttpOnly = true
-	store.Options.Secure = conf.Auth.IsProd
+	store.Options.Secure = conf.IsProd
 	store.Options.SameSite = http.SameSiteLaxMode
 
 	gothic.Store = store
@@ -34,7 +34,7 @@ func NewAuth(conf *config.AppConfig) {
 		}
 
 		var callbackURL string
-		if conf.Auth.IsProd {
+		if conf.IsProd {
 			callbackURL = fmt.Sprintf("%s://%s/%s/v1/oauth/%s/callback", conf.Web.Protocol, conf.Web.Hostname, conf.Auth.Prefix, name)
 		} else {
 			// For local development, use localhost with the port

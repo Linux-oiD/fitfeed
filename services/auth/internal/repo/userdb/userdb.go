@@ -17,9 +17,9 @@ func New(db *gorm.DB) *UserDB {
 	return &UserDB{db: db}
 }
 
-func (u *UserDB) Create(ctx context.Context, user entity.User) error {
+func (u *UserDB) Create(ctx context.Context, user *entity.User) error {
 
-	err := gorm.G[entity.User](u.db).Create(ctx, &user)
+	err := gorm.G[entity.User](u.db).Create(ctx, user)
 	return err
 }
 

@@ -33,7 +33,7 @@ func (h *V1) getAuthCallbackFunction(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "internal error", http.StatusInternalServerError)
 			return
 		}
-		// If user not found by username but oauth exists, we might have a data inconsistency 
+		// If user not found by username but oauth exists, we might have a data inconsistency
 		// or we should use UserID from oauthProvider
 		// For now, let's assume we find them.
 	} else if errors.Is(err, entity.ENOTFOUND) {
@@ -67,7 +67,7 @@ func (h *V1) getAuthCallbackFunction(w http.ResponseWriter, r *http.Request) {
 					},
 				},
 			}
-			err = h.u.RegisterUser(ctx, user)
+			err = h.u.RegisterUser(ctx, &user)
 			if err != nil {
 				http.Error(w, "failed to register user", http.StatusInternalServerError)
 				return

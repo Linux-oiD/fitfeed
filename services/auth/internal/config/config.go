@@ -9,11 +9,11 @@ import (
 )
 
 type AppConfig struct {
-	Auth struct {
+	IsProd bool `mapstructure:"is_prod"`
+	Auth   struct {
 		Port      int    `mapstructure:"port"`
 		Prefix    string `mapstructure:"prefix"`
 		Secret    string `mapstructure:"secret"`
-		IsProd    bool   `mapstructure:"is_prod"`
 		MaxAge    int    `mapstructure:"max_session_age"`
 		Providers map[string]struct {
 			Enabled      bool   `mapstructure:"enabled"`

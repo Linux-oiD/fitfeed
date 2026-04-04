@@ -18,7 +18,7 @@ type (
 		CheckUsername(ctx context.Context, username string) error
 
 		//Create new user.
-		RegisterUser(ctx context.Context, user entity.User) error
+		RegisterUser(ctx context.Context, user *entity.User) error
 
 		// Returns user by username
 		GetByUsername(ctx context.Context, username string) (entity.User, error)

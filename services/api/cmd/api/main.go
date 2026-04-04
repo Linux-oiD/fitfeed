@@ -21,7 +21,7 @@ func main() {
 
 	// Initialize slog
 	var handler slog.Handler
-	if conf.Auth.IsProd {
+	if conf.IsProd {
 		handler = slog.NewJSONHandler(os.Stdout, nil)
 	} else {
 		handler = slog.NewTextHandler(os.Stdout, nil)

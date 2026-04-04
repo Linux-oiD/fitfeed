@@ -3,8 +3,8 @@ package migrations
 import (
 	"context"
 	"database/sql"
+	"fitfeed/dbm/internal/db"
 	"fitfeed/dbm/internal/models"
-	"fitfeed/dbm/internal/postgres"
 
 	"github.com/pressly/goose/v3"
 )
@@ -14,21 +14,16 @@ func init() {
 }
 
 func upAddPasskeysTable(ctx context.Context, tx *sql.Tx) error {
-	if err := postgres.Migrator.CreateTable(&models.Passkey{}); err != nil {
+	driver := ctx.Value("driver").(string)
+	gdb, err := db.GetGormTx(tx, driver)
+	if err != nil {
 		return err
 	}
-	if err := postgres.Migrator.CreateConstraint(&models.User{}, "Passkeys"); err != nil {
-		return err
-	}
-	return nil
+	return gdb.Migrator().CreateTable(&models.Passkey{})
 }
 
 func downAddPasskeysTable(ctx context.Context, tx *sql.Tx) error {
-	if err := postgres.Migrator.DropConstraint(&models.User{}, "Passkeys"); err != nil {
-		return err
-	}
-	if err := postgres.Migrator.DropTable(&models.Passkey{}); err != nil {
-		return err
-	}
-	return nil
+	driver := ctx.Value("driver").(string)
+	gdb, _ := db.GetGormTx(tx, driver)
+	return gdb.Migrator().DropTable(&models.Passkey{})
 }
